@@ -26,14 +26,19 @@ function Player:Draw()
 	love.graphics.draw(self.sprite, self.xpos, self.ypos)
 end
 
+-- takes keyboard input for player movement
 function Player:Movement(dt)
-	if love.keyboard.isDown("w" or "up") and self.ypos < window_h + self.sprite:getHeight() then
+	-- shortcut command
+	key = love.keyboard
+	
+	-- move if wsad or arrow keys are pressed but do not leave screen
+	if (key.isDown("w") or key.isDown("up")) and self.ypos > 0 then
 		self.ypos = self.ypos - self.speed * dt
-	elseif love.keyboard.isDown("s" or "down")  and self.ypos < window_h - self.sprite:getHeight() then
+	elseif (key.isDown("s") or key.isDown("down"))  and self.ypos < window_h - self.sprite:getHeight() then
 		self.ypos = self.ypos + self.speed * dt
-	elseif love.keyboard.isDown("a" or "left") then
+	elseif (key.isDown("a") or key.isDown("left")) and self.xpos > 0 then
 		self.xpos = self.xpos - self.speed * dt
-	elseif love.keyboard.isDown("d" or "right") then
+	elseif (key.isDown("d") or key.isDown("right")) and self.xpos < window_h - self.sprite:getWidth() then
 		self.xpos = self.xpos + self.speed * dt
 	end
 end
