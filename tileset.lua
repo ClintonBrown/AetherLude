@@ -9,7 +9,7 @@ function Tileset:Create(img)
 		tile_size     = 8,
 		collidable    = 1,      -- anything after this tile is collidable
 		tiles         = {},
-		cmap          = {}
+		cmap          = {}      -- table for collision rectangles
 	}
 	setmetatable(this, self)
 	return this
@@ -24,6 +24,7 @@ function Tileset:Load(length)
 end
 
 -- create collision boxes for tilemap
+-- returns: 2D table of collision boxes
 function Tileset:LoadCollision(tmap, mapx, mapy)
 	-- table to hold collision map
 	self.cmap = {}
