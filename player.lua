@@ -58,12 +58,3 @@ function Player:Movement(dt, is_collision)
 	self.collider.y = self.ypos
 	self.collider.x = self.xpos
 end
-
----- checks if box is overlapping another box
----- returns: true if boxes are colliding
---function Player:CheckCollision(x1, y1, w1, h1, x2, y2, w2, h2)	
---	return x1 < x2+w2 and
---			x2 < x1+w1 and
---            y1 < y2+h2 and
---            y2 < y1+h1
---end
