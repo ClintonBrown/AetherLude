@@ -4,6 +4,9 @@ local player = require("player")
 local tileset = require("tileset")
 
 function love.load()
+	-- set up debugging
+	if arg[#arg] == "-debug" then require ("mobdebug").start() end
+	
 	-- window setup and variables
 	love.window.setTitle("Aetherlude")
 	scaler = 4
@@ -44,6 +47,10 @@ function love.load()
 					 { 3, 3, 3, 3, 3, 3, 3, 3 },
 					 { 3, 3, 3, 3, 3, 3, 3, 3 },
 					 { 2, 3, 2, 3, 3, 2, 3, 2 } }
+	
+	-- load collision
+	map_1_collision = tileset_1:LoadCollision(map_1_layer_1, 8, 8)
+	
 end
 
 function love.update(dt)
@@ -54,10 +61,8 @@ function love.draw()
 	-- scale the graphics
 	love.graphics.scale(scaler, scaler)
 	
-	-- draw tiles
+	-- draw tilemaps
 	tileset_1:Draw(map_1_layer_1, 8, 8)
-	
-	-- draw tiles
 	tileset_1:Draw(map_1_layer_2, 8, 8)
 	
 	-- draw the player
@@ -67,9 +72,20 @@ function love.draw()
 	--[[DEBUG---------------------------------------------------------------------------------------------------------------------]]
 	--------------------------------------------------------------------------------------------------------------------------------
 	-- draw player collision box
-	love.graphics.setColor(255, 0, 0, 255)
-	love.graphics.rectangle("line", player_1.collider.x, player_1.collider.y, player_1.collider.width, player_1.collider.height)
-	love.graphics.setColor(255, 255, 255, 255)
+--	love.graphics.setColor(255, 0, 0, 255)
+--	love.graphics.rectangle("line", player_1.collider.x, player_1.collider.y, player_1.collider.width, player_1.collider.height)
+	
+	
+--	-- draw map collision boxes
+--	for y = 1, 8 do
+--		for x = 1, 8 do
+--			-- if there is a valid tile number draw one, otherwise skip
+--			if map_1_collision[y][x] ~= nil then
+--				love.graphics.rectangle("line", map_1_collision[y][x].x, map_1_collision[y][x].y, map_1_collision[y][x].width, map_1_collision[y][x].height)
+--			end
+--		end
+--	end
+--	love.graphics.setColor(255, 255, 255, 255)
 	--------------------------------------------------------------------------------------------------------------------------------
 
 end
