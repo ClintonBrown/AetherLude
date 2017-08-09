@@ -1,4 +1,4 @@
-Tileset = {}
+local Tileset = {}
 Tileset.__index = Tileset
 
 -- create a tileset
@@ -57,3 +57,5 @@ function Tileset:Draw(tmap, map_w, map_h)
 		end
 	end
 end
+
+return Tileset

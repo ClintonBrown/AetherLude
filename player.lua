@@ -1,7 +1,7 @@
 -- player class
 
 -- initialize metatable
-Player = {}
+local Player = {}
 Player.__index = Player
 
 -- create the player
@@ -58,3 +58,5 @@ function Player:Movement(dt, is_collision)
 	self.collider.y = self.ypos
 	self.collider.x = self.xpos
 end
+
+return Player

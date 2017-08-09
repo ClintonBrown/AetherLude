@@ -46,7 +46,7 @@ function love.load()
 	window_height = love.graphics.getHeight() / scaler
 	
 	-- load player object, sprite filtering, and initial location
-	player_1 = Player:Create(love.graphics.newImage("sprites/sprite1.png"))
+	player_1 = player:Create(love.graphics.newImage("sprites/sprite1.png"))
 	player_1.sprite:setFilter("nearest", "nearest")
 	player_1.xpos   = math.floor((window_width / 2) - player_1.sprite:getWidth()/2)
 	player_1.ypos   = math.floor((window_height / 2) - player_1.sprite:getHeight()/2)
@@ -55,7 +55,7 @@ function love.load()
 	player_1:LoadCollider()
 	
 	-- load tileset
-	tileset_1 = Tileset:Create(love.graphics.newImage("tiles/tile1.png"))
+	tileset_1 = tileset:Create(love.graphics.newImage("tiles/tile1.png"))
 	tileset_1.tileset_image:setFilter("nearest", "nearest")
 	tileset_1:Load(2)
 	
