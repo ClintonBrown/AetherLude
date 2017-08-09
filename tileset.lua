@@ -25,14 +25,14 @@ end
 
 -- create collision boxes for tilemap
 -- returns: 2D table of collision boxes
-function Tileset:LoadCollision(tmap, mapx, mapy)
+function Tileset:LoadCollision(tmap, map_w, map_h)
 	-- table to hold collision map
 	self.cmap = {}
 	
-	for y = 1, mapy do
+	for y = 1, map_h do
 		-- create new row
 		self.cmap[y] = {}
-		for x = 1, mapx do
+		for x = 1, map_w do
 			if tmap[y][x] >= self.collidable then
 				-- create bounding rectangle at collidable points
 				self.cmap[y][x] = { x = (x - 1) * self.tile_size, 
@@ -46,10 +46,10 @@ function Tileset:LoadCollision(tmap, mapx, mapy)
 end
 
 -- draw specified tiles to the screen according to the tilemap dimensions
-function Tileset:Draw(tmap, mapx, mapy)
+function Tileset:Draw(tmap, map_w, map_h)
 	-- loop through
-	for y = 1, mapy do
-		for x = 1, mapx do
+	for y = 1, map_h do
+		for x = 1, map_w do
 			-- if there is a valid tile number draw one, otherwise skip
 			if tmap[y][x] < 3 and tmap[y][x] > -1 then
 				love.graphics.draw(self.tileset_image, self.tiles[tmap[y][x]], (x - 1) * self.tile_size, (y - 1) * self.tile_size)
