@@ -9,7 +9,8 @@ function MessageBox:Create()
 		MB_WIDTH  = 0,
 		MB_HEIGHT = 0,
 		mb_xpos   = 0,
-		mb_ypos   = 0 }
+		mb_ypos   = 0,
+		enabled   = false }
 	
 	setmetatable(this, self)
 	return this
@@ -23,21 +24,35 @@ function MessageBox:Load()
 	self.mb_ypos   = WINDOW_HEIGHT - (WINDOW_HEIGHT / 4) - self.MB_GAP
 end
 
+-- get input from user to continue past this messagebox
+function MessageBox:Continue()
+	if self.enabled then
+		-- if key is pressed close messagebox
+		if love.keyboard.isDown("space") or love.keyboard.isDown("return") then
+			self.enabled = false
+		end
+	end
+end
+
 function MessageBox:DrawBox()
+	if self.enabled then
 	-- draw message box background
-	love.graphics.setColor(0, 0, 40, 255)
-	love.graphics.rectangle("fill", self.mb_xpos, self.mb_ypos, self.MB_WIDTH, self.MB_HEIGHT)
-	-- draw message box border
-	love.graphics.setColor(255, 255, 255, 255)
-	love.graphics.rectangle("line", self.mb_xpos, self.mb_ypos, self.MB_WIDTH, self.MB_HEIGHT)
+		love.graphics.setColor(0, 0, 40, 255)
+		love.graphics.rectangle("fill", self.mb_xpos, self.mb_ypos, self.MB_WIDTH, self.MB_HEIGHT)
+		-- draw message box border
+		love.graphics.setColor(255, 255, 255, 255)
+		love.graphics.rectangle("line", self.mb_xpos, self.mb_ypos, self.MB_WIDTH, self.MB_HEIGHT)
+	end
 end
 
 function MessageBox:DrawText(message, gfx_scaler)
-	local font      = love.graphics.newFont("alphbeta.ttf", 16)
-	
-	-- draw text in message box
-	love.graphics.setFont(font)
-	love.graphics.printf(message, (self.mb_xpos + self.MB_GAP) * gfx_scaler, (self.mb_ypos + self.MB_GAP) * gfx_scaler, self.MB_WIDTH * gfx_scaler)
+	if self.enabled then
+		local font      = love.graphics.newFont("alphbeta.ttf", 16)
+		
+		-- draw text in message box
+		love.graphics.setFont(font)
+		love.graphics.printf(message, (self.mb_xpos + self.MB_GAP) * gfx_scaler, (self.mb_ypos + self.MB_GAP) * gfx_scaler, self.MB_WIDTH * gfx_scaler)
+	end
 end
 
 return MessageBox

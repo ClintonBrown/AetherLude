@@ -21,8 +21,8 @@ local map_1_layer_1 = {{ 1, 1, 1, 0, 0, 1, 1, 1 },
 					   { 0, 0, 0, 0, 0, 0, 0, 0 },
 					   { 0, 0, 0, 0, 0, 0, 0, 0 },
 					   { 0, 0, 0, 0, 0, 0, 0, 0 },
-					   { 1, 0, 0, 0, 0, 0, 0, 1 },
-					   { 1, 0, 1, 0, 0, 1, 0, 1 },
+					   { 0, 0, 0, 0, 0, 0, 0, 0 },
+					   { 0, 0, 0, 0, 0, 0, 0, 0 },
 					   { 1, 1, 1, 1, 1, 1, 1, 1 } }
 		
 local map_1_layer_2 = {{ 3, 2, 3, 3, 3, 3, 2, 3 },
@@ -73,6 +73,10 @@ function love.update(dt)
 	-- check collisions for player
 	local is_collision = collision.UpdateCollision(player_1, map_width, map_height, map_1_collision)
 	
+	-- messagebox event handling
+	if messagebox_1.enabled then player_1.can_act = false else player_1.can_act = true end
+	messagebox_1:Continue()
+	
 	-- allow player movement
 	player_1:Movement(dt, is_collision)
 	
@@ -92,14 +96,14 @@ function love.draw()
 	-- draw the player
 	player_1:Draw()
 	
-	-- messagebox draw box test
-	-- messagebox_1:DrawBox()
+	-- draw messagebox box
+	messagebox_1:DrawBox()
 	
 	-- unscaled graphics after the pop
 	love.graphics.pop()
 	
-	-- messagebox draw text test
-	-- messagebox_1:DrawText("This is a test of the messagebox system. Check out this messagebox!", SCALER)
+	-- draw messagebox text
+	messagebox_1:DrawText("This is a test of the messagebox system. Check out this messagebox!", SCALER)
 	
 
 	
