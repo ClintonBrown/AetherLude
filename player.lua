@@ -41,16 +41,16 @@ function Player:Movement(dt, is_collision)
 		
 		-- move if wsad or arrow keys are pressed but do not leave screen
 		if (key.isDown("w") or key.isDown("up")) and self.ypos > 0 and not is_collision.up then
-			self.ypos = self.ypos - self.speed * dt
+			self.ypos = self.ypos - (self.speed * dt)
 			
 		elseif (key.isDown("s") or key.isDown("down"))  and self.ypos < WINDOW_HEIGHT - self.sprite:getHeight() and not is_collision.down then
-			self.ypos = self.ypos + self.speed * dt
+			self.ypos = self.ypos + (self.speed * dt)
 			
 		elseif (key.isDown("a") or key.isDown("left")) and self.xpos > 0 and not is_collision.left then
-			self.xpos = self.xpos - self.speed * dt
+			self.xpos = self.xpos - (self.speed * dt)
 			
 		elseif (key.isDown("d") or key.isDown("right")) and self.xpos < WINDOW_WIDTH - self.sprite:getWidth() and not is_collision.right then
-			self.xpos = self.xpos + self.speed * dt
+			self.xpos = self.xpos + (self.speed * dt)
 		end
 		
 		-- move collider to new player location

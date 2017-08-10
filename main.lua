@@ -20,9 +20,9 @@ local map_1_layer_1 = {{ 1, 1, 1, 0, 0, 1, 1, 1 },
 					   { 0, 0, 0, 0, 0, 0, 0, 0 },
 					   { 0, 0, 0, 0, 0, 0, 0, 0 },
 					   { 0, 0, 0, 0, 0, 0, 0, 0 },
-					   { 0, 0, 0, 0, 0, 0, 0, 0 },
-					   { 0, 0, 0, 0, 0, 0, 0, 0 },
-					   { 0, 0, 0, 0, 0, 0, 0, 0 },
+					   { 0, 0, 0, 0, 0, 0, 0, 1 },
+					   { 0, 0, 1, 0, 1, 0, 0, 1 },
+					   { 0, 0, 1, 0, 1, 0, 0, 1 },
 					   { 1, 1, 1, 1, 1, 1, 1, 1 } }
 		
 local map_1_layer_2 = {{ 3, 2, 3, 3, 3, 3, 2, 3 },
@@ -99,14 +99,6 @@ function love.draw()
 	-- draw messagebox box
 	messagebox_1:DrawBox()
 	
-	-- unscaled graphics after the pop
-	love.graphics.pop()
-	
-	-- draw messagebox text
-	messagebox_1:DrawText("This is a test of the messagebox system. Check out this messagebox!", SCALER)
-	
-
-	
 	--------------------------------------------------------------------------------------------------------------------------------
 	--[[DEBUG---------------------------------------------------------------------------------------------------------------------]]
 	--------------------------------------------------------------------------------------------------------------------------------
@@ -126,5 +118,14 @@ function love.draw()
 --	end
 --	love.graphics.setColor(255, 255, 255, 255)
 	--------------------------------------------------------------------------------------------------------------------------------
+	
+	-- unscaled graphics after the pop
+	love.graphics.pop()
+	
+	-- draw messagebox text
+	messagebox_1:DrawText("This is a test of the messagebox system. Check out this messagebox!", SCALER)
+	
+	love.graphics.print("x: ".. player_1.xpos, 2, 2)
+	love.graphics.print("y: ".. player_1.ypos, 2, 15)
 
 end
