@@ -1,16 +1,16 @@
+-- Tileset class
+
 local Tileset = {}
 Tileset.__index = Tileset
 
 -- create a tileset
 function Tileset:Create(img)
-	local this =
-	{
-		tileset_image = img,
-		tile_size     = 8,
-		collidable    = 1,      -- anything after this tile is collidable
-		tiles         = {},
-		cmap          = {}      -- table for collision rectangles
-	}
+	local this = { tileset_image = img,
+				   tile_size     = 8,
+				   collidable    = 1,      -- anything after this tile is collidable
+				   tiles         = {},
+				   cmap          = {} }    -- table for collision rectangles
+
 	setmetatable(this, self)
 	return this
 end

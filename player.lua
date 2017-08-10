@@ -1,23 +1,20 @@
--- player class
+-- Player class
 
--- initialize metatable
 local Player = {}
 Player.__index = Player
 
 -- create the player
 function Player:Create(img)
-	local this =
-	{
-		sprite   = img,
-		speed    = 20,
-		xpos     = 0,
-		ypos	 = 0,
-		collider = { x, y, width, height },
-		name     = "Aether",
-		health   = 20,
-		attack   = 5,
-		defense  = 5
-	}
+	local this = { sprite   = img,
+				   speed    = 20,
+				   xpos     = 0,
+				   ypos	    = 0,
+				   collider = { x, y, width, height },
+				   name     = "Aether",
+				   health   = 20,
+				   attack   = 5,
+				   defense  = 5 }
+
 	setmetatable(this, self)
 	return this	
 end
@@ -44,13 +41,13 @@ function Player:Movement(dt, is_collision)
 	if (key.isDown("w") or key.isDown("up")) and self.ypos > 0 and not is_collision.up then
 		self.ypos = self.ypos - self.speed * dt
 		
-	elseif (key.isDown("s") or key.isDown("down"))  and self.ypos < window_height - self.sprite:getHeight() and not is_collision.down then
+	elseif (key.isDown("s") or key.isDown("down"))  and self.ypos < WINDOW_HEIGHT - self.sprite:getHeight() and not is_collision.down then
 		self.ypos = self.ypos + self.speed * dt
 		
 	elseif (key.isDown("a") or key.isDown("left")) and self.xpos > 0 and not is_collision.left then
 		self.xpos = self.xpos - self.speed * dt
 		
-	elseif (key.isDown("d") or key.isDown("right")) and self.xpos < window_width - self.sprite:getWidth() and not is_collision.right then
+	elseif (key.isDown("d") or key.isDown("right")) and self.xpos < WINDOW_WIDTH - self.sprite:getWidth() and not is_collision.right then
 		self.xpos = self.xpos + self.speed * dt
 	end
 	

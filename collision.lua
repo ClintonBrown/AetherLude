@@ -1,3 +1,5 @@
+-- Collision detection
+
 local Collision = {}
 
 -- perform collision checks for an object with 4-direction movement

@@ -1,8 +1,9 @@
 -- Love2D RPG project
 
-local player    = require("player")
-local tileset   = require("tileset")
-local collision = require("collision")
+local player     = require("player")
+local tileset    = require("tileset")
+local collision  = require("collision")
+local messagebox = require("messagebox")
 
 -- map dimensions
 local map_width  = 8
@@ -12,7 +13,7 @@ local map_height = 8
 local is_collision = { left = false, right = false, up = false, down = false }
 
 -- window variables
-local scaler = 4
+local SCALER = 4
 
 -- load map
 local map_1_layer_1 = {{ 1, 1, 1, 0, 0, 1, 1, 1 },
@@ -41,15 +42,15 @@ function love.load()
 	
 	-- window setup and variables
 	love.window.setTitle("Aetherlude")
-	love.window.setMode(64 * scaler, 64 * scaler, {fullscreen=false, msaa=0})
-	window_width  = love.graphics.getWidth() / scaler
-	window_height = love.graphics.getHeight() / scaler
+	love.window.setMode(64 * SCALER, 64 * SCALER, {fullscreen=false, msaa=0})
+	WINDOW_WIDTH  = love.graphics.getWidth() / SCALER
+	WINDOW_HEIGHT = love.graphics.getHeight() / SCALER
 	
 	-- load player object, sprite filtering, and initial location
 	player_1 = player:Create(love.graphics.newImage("sprites/sprite1.png"))
 	player_1.sprite:setFilter("nearest", "nearest")
-	player_1.xpos   = math.floor((window_width / 2) - player_1.sprite:getWidth()/2)
-	player_1.ypos   = math.floor((window_height / 2) - player_1.sprite:getHeight()/2)
+	player_1.xpos   = math.floor((WINDOW_WIDTH / 2) - player_1.sprite:getWidth()/2)
+	player_1.ypos   = math.floor((WINDOW_HEIGHT / 2) - player_1.sprite:getHeight()/2)
 	
 	-- load player collider
 	player_1:LoadCollider()
@@ -61,6 +62,10 @@ function love.load()
 	
 	-- load collision
 	map_1_collision = tileset_1:LoadCollision(map_1_layer_1, map_width, map_height)
+	
+	-- create a messagebox object
+	messagebox_1 = messagebox:Create()
+	messagebox_1:Load()
 	
 end
 
@@ -74,8 +79,11 @@ function love.update(dt)
 end
 
 function love.draw()
+	-- store the current state
+	love.graphics.push()
+	
 	-- scale the graphics
-	love.graphics.scale(scaler, scaler)
+	love.graphics.scale(SCALER, SCALER)
 	
 	-- draw tilemaps
 	tileset_1:Draw(map_1_layer_1, map_width, map_height)
@@ -83,6 +91,17 @@ function love.draw()
 	
 	-- draw the player
 	player_1:Draw()
+	
+	-- messagebox draw box test
+	-- messagebox_1:DrawBox()
+	
+	-- unscaled graphics after the pop
+	love.graphics.pop()
+	
+	-- messagebox draw text test
+	-- messagebox_1:DrawText("This is a test of the messagebox system. Check out this messagebox!", SCALER)
+	
+
 	
 	--------------------------------------------------------------------------------------------------------------------------------
 	--[[DEBUG---------------------------------------------------------------------------------------------------------------------]]
