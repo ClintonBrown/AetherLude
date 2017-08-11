@@ -20,7 +20,7 @@ function love.load()
 	WINDOW_HEIGHT = love.graphics.getHeight() / SCALER
 	
 	-- load player object, sprite filtering, and initial location
-	player_1 = player:Create(love.graphics.newImage("sprites/sprite1.png"))
+	player_1 = player:Create(love.graphics.newImage("sprites/sprite1.png"), "Aether")
 	player_1.sprite:setFilter("nearest", "nearest")
 	player_1.xpos   = math.floor((WINDOW_WIDTH / 2) - player_1.sprite:getWidth()/2)
 	player_1.ypos   = math.floor((WINDOW_HEIGHT / 2) - player_1.sprite:getHeight()*2)
@@ -37,6 +37,10 @@ function love.load()
 	-- create a messagebox object
 	messagebox_1 = messagebox:Create()
 	messagebox_1:Load()
+	
+	-- load intro text
+	intro_message = "[-INTERCOM-]\nAethercore engineer 5515 please report to the North Command Room immediately."
+	messagebox_1.enabled = true
 	
 end
 
@@ -94,6 +98,6 @@ function love.draw()
 	love.graphics.pop()
 	
 	-- draw messagebox text
-	messagebox_1:DrawText("This is a test of the messagebox system. Check out this messagebox!", SCALER)
+	messagebox_1:DrawText(intro_message, SCALER)
 
 end
