@@ -4,13 +4,13 @@ local Player = {}
 Player.__index = Player
 
 -- create the player
-function Player:Create(img)
+function Player:Create(img, nm)
 	local this = { sprite   = img,
 				   speed    = 20,
 				   xpos     = 0,
 				   ypos	    = 0,
 				   collider = { x, y, width, height },
-				   name     = "Aether",
+				   name     = nm,
 				   health   = 20,
 				   attack   = 5,
 				   defense  = 5,
