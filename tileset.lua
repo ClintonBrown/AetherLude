@@ -4,20 +4,21 @@ local Tileset = {}
 Tileset.__index = Tileset
 
 -- create a tileset
-function Tileset:Create(img)
+function Tileset:Create(img, length)
 	local this = { tileset_image = img,
 				   tile_size     = 8,
-				   collidable    = 1,      -- anything after this tile is collidable
+				   collidable    = 1,           -- anything after this tile is collidable
+				   tile_count    = length,      -- the number of tiles in the tileset
 				   tiles         = {},
-				   cmap          = {} }    -- table for collision rectangles
+				   cmap          = {} }         -- table for collision rectangles
 
 	setmetatable(this, self)
 	return this
 end
 
 -- load a tileset with a specified length in tiles
-function Tileset:Load(length)
-	for t = 0, length do
+function Tileset:Load()
+	for t = 0, self.tile_count do
 		-- go through tileset image and get each individual tile
 		self.tiles[t] = love.graphics.newQuad(t * self.tile_size, 0, self.tile_size, self.tile_size, self.tileset_image:getDimensions())
 	end
@@ -51,7 +52,7 @@ function Tileset:Draw(tmap, map_w, map_h)
 	for y = 1, map_h do
 		for x = 1, map_w do
 			-- if there is a valid tile number draw one, otherwise skip
-			if tmap[y][x] < 3 and tmap[y][x] > -1 then
+			if tmap[y][x] < self.tile_count and tmap[y][x] > -1 then
 				love.graphics.draw(self.tileset_image, self.tiles[tmap[y][x]], (x - 1) * self.tile_size, (y - 1) * self.tile_size)
 			end
 		end

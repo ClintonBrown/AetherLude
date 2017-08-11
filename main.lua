@@ -17,22 +17,22 @@ local SCALER = 4
 
 -- load map
 local map_1_layer_1 = {{ 1, 1, 1, 0, 0, 1, 1, 1 },
-					   { 0, 0, 0, 0, 0, 0, 0, 0 },
-					   { 0, 0, 0, 0, 0, 0, 0, 0 },
-					   { 0, 0, 0, 0, 0, 0, 0, 0 },
-					   { 0, 0, 0, 0, 0, 0, 0, 1 },
-					   { 0, 0, 1, 0, 1, 0, 0, 1 },
-					   { 0, 0, 1, 0, 1, 0, 0, 1 },
-					   { 1, 1, 1, 1, 1, 1, 1, 1 } }
+					   { 3, 0, 0, 0, 0, 0, 0, 3 },
+					   { 3, 0, 0, 0, 0, 0, 0, 3 },
+					   { 3, 3, 3, 0, 0, 3, 3, 3 },
+					   { 0, 0, 3, 3, 3, 3, 0, 0 },
+					   { 1, 1, 1, 3, 3, 1, 1, 1 },
+					   { 9, 9, 9, 1, 1, 9, 9, 9 },
+					   { 9, 9, 9, 9, 9, 9, 9, 9 } }
 		
-local map_1_layer_2 = {{ 3, 2, 3, 3, 3, 3, 2, 3 },
-					   { 3, 3, 3, 3, 3, 3, 3, 3 },
-					   { 3, 3, 3, 3, 3, 3, 3, 3 },
-					   { 3, 3, 3, 3, 3, 3, 3, 3 },
-					   { 3, 3, 3, 3, 3, 3, 3, 3 },
-					   { 3, 3, 3, 3, 3, 3, 3, 3 },
-					   { 3, 3, 3, 3, 3, 3, 3, 3 },
-					   { 2, 3, 2, 3, 3, 2, 3, 2 } }
+local map_1_layer_2 = {{ 9, 2, 9, 9, 9, 9, 2, 9 },
+					   { 9, 9, 9, 9, 9, 9, 9, 9 },
+					   { 9, 9, 9, 9, 9, 9, 9, 9 },
+					   { 9, 9, 9, 9, 9, 9, 9, 9 },
+					   { 9, 9, 9, 9, 9, 9, 9, 9 },
+					   { 9, 2, 9, 9, 9, 9, 2, 9 },
+					   { 9, 9, 9, 9, 9, 9, 9, 9 },
+					   { 9, 9, 9, 9, 9, 9, 9, 9 } }
 
 
 
@@ -50,15 +50,15 @@ function love.load()
 	player_1 = player:Create(love.graphics.newImage("sprites/sprite1.png"))
 	player_1.sprite:setFilter("nearest", "nearest")
 	player_1.xpos   = math.floor((WINDOW_WIDTH / 2) - player_1.sprite:getWidth()/2)
-	player_1.ypos   = math.floor((WINDOW_HEIGHT / 2) - player_1.sprite:getHeight()/2)
+	player_1.ypos   = math.floor((WINDOW_HEIGHT / 2) - player_1.sprite:getHeight()*2)
 	
 	-- load player collider
 	player_1:LoadCollider()
 	
 	-- load tileset
-	tileset_1 = tileset:Create(love.graphics.newImage("tiles/tile1.png"))
+	tileset_1 = tileset:Create(love.graphics.newImage("tiles/tile1.png"), 4)
 	tileset_1.tileset_image:setFilter("nearest", "nearest")
-	tileset_1:Load(2)
+	tileset_1:Load()
 	
 	-- load collision
 	map_1_collision = tileset_1:LoadCollision(map_1_layer_1, map_width, map_height)
@@ -124,8 +124,5 @@ function love.draw()
 	
 	-- draw messagebox text
 	messagebox_1:DrawText("This is a test of the messagebox system. Check out this messagebox!", SCALER)
-	
-	love.graphics.print("x: ".. player_1.xpos, 2, 2)
-	love.graphics.print("y: ".. player_1.ypos, 2, 15)
 
 end
