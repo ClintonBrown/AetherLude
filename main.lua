@@ -4,37 +4,10 @@ local player     = require("player")
 local tileset    = require("tileset")
 local collision  = require("collision")
 local messagebox = require("messagebox")
-
--- map dimensions
-local map_width  = 8
-local map_height = 8
-
--- collision detection flags
-local is_collision = { left = false, right = false, up = false, down = false }
+local maps       = require("tilemaps")
 
 -- window variables
 local SCALER = 4
-
--- load map
-local map_1_layer_1 = {{ 1, 1, 1, 0, 0, 1, 1, 1 },
-					   { 3, 0, 0, 0, 0, 0, 0, 3 },
-					   { 3, 0, 0, 0, 0, 0, 0, 3 },
-					   { 3, 3, 3, 0, 0, 3, 3, 3 },
-					   { 0, 0, 3, 3, 3, 3, 0, 0 },
-					   { 1, 1, 1, 3, 3, 1, 1, 1 },
-					   { 9, 9, 9, 1, 1, 9, 9, 9 },
-					   { 9, 9, 9, 9, 9, 9, 9, 9 } }
-		
-local map_1_layer_2 = {{ 9, 2, 9, 9, 9, 9, 2, 9 },
-					   { 9, 9, 9, 9, 9, 9, 9, 9 },
-					   { 9, 9, 9, 9, 9, 9, 9, 9 },
-					   { 9, 9, 9, 9, 9, 9, 9, 9 },
-					   { 9, 9, 9, 9, 9, 9, 9, 9 },
-					   { 9, 2, 9, 9, 9, 9, 2, 9 },
-					   { 9, 9, 9, 9, 9, 9, 9, 9 },
-					   { 9, 9, 9, 9, 9, 9, 9, 9 } }
-
-
 
 function love.load()
 	-- set up debugging
@@ -51,17 +24,15 @@ function love.load()
 	player_1.sprite:setFilter("nearest", "nearest")
 	player_1.xpos   = math.floor((WINDOW_WIDTH / 2) - player_1.sprite:getWidth()/2)
 	player_1.ypos   = math.floor((WINDOW_HEIGHT / 2) - player_1.sprite:getHeight()*2)
-	
-	-- load player collider
 	player_1:LoadCollider()
 	
-	-- load tileset
+	-- load tileset object
 	tileset_1 = tileset:Create(love.graphics.newImage("tiles/tile1.png"), 4)
 	tileset_1.tileset_image:setFilter("nearest", "nearest")
 	tileset_1:Load()
 	
 	-- load collision
-	map_1_collision = tileset_1:LoadCollision(map_1_layer_1, map_width, map_height)
+	map_1_collision = tileset_1:LoadCollision(maps.map_1_layer_1, maps.map_width, maps.map_height)
 	
 	-- create a messagebox object
 	messagebox_1 = messagebox:Create()
@@ -71,7 +42,7 @@ end
 
 function love.update(dt)
 	-- check collisions for player
-	local is_collision = collision.UpdateCollision(player_1, map_width, map_height, map_1_collision)
+	local is_collision = collision.UpdateCollision(player_1, maps.map_width, maps.map_height, map_1_collision)
 	
 	-- messagebox event handling
 	if messagebox_1.enabled then player_1.can_act = false else player_1.can_act = true end
@@ -90,8 +61,8 @@ function love.draw()
 	love.graphics.scale(SCALER, SCALER)
 	
 	-- draw tilemaps
-	tileset_1:Draw(map_1_layer_1, map_width, map_height)
-	tileset_1:Draw(map_1_layer_2, map_width, map_height)
+	tileset_1:Draw(maps.map_1_layer_1, maps.map_width, maps.map_height)
+	tileset_1:Draw(maps.map_1_layer_2, maps.map_width, maps.map_height)
 	
 	-- draw the player
 	player_1:Draw()
