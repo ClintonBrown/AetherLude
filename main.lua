@@ -1,10 +1,10 @@
 -- Love2D RPG project
 
-local player     = require("player")
-local tileset    = require("tileset")
-local collision  = require("collision")
-local messagebox = require("messagebox")
-local maps       = require("tilemaps")
+local player     = require("scripts.player")
+local tileset    = require("scripts.tileset")
+local collision  = require("scripts.collision")
+local messagebox = require("scripts.messagebox")
+local maps       = require("scripts.tilemaps")
 
 -- window variables
 local SCALER = 4
