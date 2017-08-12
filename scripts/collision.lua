@@ -7,18 +7,19 @@ local Collision = {}
 function Collision.UpdateCollision(object, map_w, map_h, m1c)
 	-- reset collision check
 	local is_collision = { left = false, right = false, up = false, down = false }
+	local C_GAPY    = object.collider.height / 4
+	local C_GAPX    = object.collider.width / 4
+	local C_ADJY    = object.collider.height * 0.25
+	local C_ADJX    = object.collider.width * 0.25
+	local C_OFFSETY = (object.collider.height / 4) / 2
+	local C_OFFSETX = (object.collider.width / 4) / 2
 	
-	-- check for collisions
+	-- check for collisions with boxes on map
 	for y = 1, map_w do
 		for x = 1, map_h do
 			-- if there is a collision report it
 			if m1c[y][x] ~= nil then
-				local C_GAPY    = object.collider.height / 4
-				local C_GAPX    = object.collider.width / 4
-				local C_ADJY    = object.collider.height * 0.25
-				local C_ADJX    = object.collider.width * 0.25
-				local C_OFFSETY = (object.collider.height / 4) / 2
-				local C_OFFSETX = (object.collider.width / 4) / 2
+				
 				
 				-- Check for collisions on left, right, top, and bottom of player collision box
 				if Collision.CheckCollision(object.collider.x, (object.collider.y + C_OFFSETY), (object.collider.width - C_ADJX), (object.collider.height - C_GAPY),

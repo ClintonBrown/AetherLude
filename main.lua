@@ -2,7 +2,6 @@
 
 local player     = require("scripts.player")
 local tileset    = require("scripts.tileset")
-local collision  = require("scripts.collision")
 local messagebox = require("scripts.messagebox")
 local maps       = require("scripts.tilemaps")
 
@@ -45,15 +44,12 @@ function love.load()
 end
 
 function love.update(dt)
-	-- check collisions for player
-	local is_collision = collision.UpdateCollision(player_1, maps.map_width, maps.map_height, map_1_collision)
-	
 	-- messagebox event handling
 	if messagebox_1.enabled then player_1.can_act = false else player_1.can_act = true end
 	messagebox_1:Continue()
 	
 	-- allow player movement
-	player_1:Movement(dt, is_collision)
+	player_1:Movement(dt, maps.map_height, maps.map_width, map_1_collision)
 	
 end
 

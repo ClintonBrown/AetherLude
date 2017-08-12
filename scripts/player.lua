@@ -6,7 +6,7 @@ Player.__index = Player
 -- create the player
 function Player:Create(img, nm)
 	local this = { sprite   = img,
-				   speed    = 20,
+				   speed    = 1,
 				   xpos     = 0,
 				   ypos	    = 0,
 				   collider = { x, y, width, height },
@@ -34,23 +34,27 @@ function Player:Draw()
 end
 
 -- takes keyboard input for player movement
-function Player:Movement(dt, is_collision)
+function Player:Movement(dt, map_w, map_h, m1c)
 	if self.can_act then
 		-- shorthand command
 		local key = love.keyboard
 		
+		-- check collisions for player
+		local collision  = require("scripts.collision")
+		local is_collision = collision.UpdateCollision(player_1, map_w, map_h, m1c)
+		
 		-- move if wsad or arrow keys are pressed but do not leave screen
 		if (key.isDown("w") or key.isDown("up")) and self.ypos > 0 and not is_collision.up then
-			self.ypos = self.ypos - (self.speed * dt)
+			self.ypos = math.floor(self.ypos) - (self.speed * dt)
 			
 		elseif (key.isDown("s") or key.isDown("down"))  and self.ypos < WINDOW_HEIGHT - self.sprite:getHeight() and not is_collision.down then
-			self.ypos = self.ypos + (self.speed * dt)
+			self.ypos = math.ceil(self.ypos) + (self.speed * dt)
 			
 		elseif (key.isDown("a") or key.isDown("left")) and self.xpos > 0 and not is_collision.left then
-			self.xpos = self.xpos - (self.speed * dt)
+			self.xpos = math.floor(self.xpos) - (self.speed * dt)
 			
 		elseif (key.isDown("d") or key.isDown("right")) and self.xpos < WINDOW_WIDTH - self.sprite:getWidth() and not is_collision.right then
-			self.xpos = self.xpos + (self.speed * dt)
+			self.xpos = math.ceil(self.xpos) + (self.speed * dt)
 		end
 		
 		-- move collider to new player location
