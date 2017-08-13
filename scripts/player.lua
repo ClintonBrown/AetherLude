@@ -41,7 +41,7 @@ function Player:Movement(dt, map_w, map_h, m1c)
 		
 		-- check collisions for player
 		local collision  = require("scripts.collision")
-		local is_collision = collision.UpdateCollision(player_1, map_w, map_h, m1c)
+		local is_collision = collision.UpdateCollision(self, map_w, map_h, m1c)
 		
 		-- move if wsad or arrow keys are pressed but do not leave screen
 		if (key.isDown("w") or key.isDown("up")) and self.ypos > 0 and not is_collision.up then
