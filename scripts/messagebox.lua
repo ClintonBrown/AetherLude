@@ -47,7 +47,7 @@ end
 
 function MessageBox:DrawText(message, gfx_scaler)
 	if self.enabled then
-		local font      = love.graphics.newFont("alphbeta.ttf", 14)
+		local font = love.graphics.newFont("alphbeta.ttf", 14)
 		
 		-- draw text in message box
 		love.graphics.setFont(font)
