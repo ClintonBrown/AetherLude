@@ -8,6 +8,12 @@ local maps       = require("scripts.tilemaps")
 -- window variables
 local SCALER = 4
 
+-- object initialization
+local player_1 = player:Create(love.graphics.newImage("sprites/sprite1.png"), "Aether")
+local tileset_1 = tileset:Create(love.graphics.newImage("tiles/tile1.png"), 4)
+local map_1_collision = tileset_1:LoadCollision(maps.map_1_layer_1, maps.map_width, maps.map_height)
+local messagebox_1 = messagebox:Create()
+
 function love.load()
 	-- set up debugging
 	if arg[#arg] == "-debug" then require ("mobdebug").start() end
@@ -19,22 +25,16 @@ function love.load()
 	WINDOW_HEIGHT = love.graphics.getHeight() / SCALER
 	
 	-- load player object, sprite filtering, and initial location
-	player_1 = player:Create(love.graphics.newImage("sprites/sprite1.png"), "Aether")
 	player_1.sprite:setFilter("nearest", "nearest")
-	player_1.xpos   = math.floor((WINDOW_WIDTH / 2) - player_1.sprite:getWidth()/2)
-	player_1.ypos   = math.floor((WINDOW_HEIGHT / 2) - player_1.sprite:getHeight()*2)
+	player_1.xpos = math.floor((WINDOW_WIDTH / 2) - player_1.sprite:getWidth()/2)
+	player_1.ypos = math.floor((WINDOW_HEIGHT / 2) - player_1.sprite:getHeight()*2)
 	player_1:LoadCollider()
 	
 	-- load tileset object
-	tileset_1 = tileset:Create(love.graphics.newImage("tiles/tile1.png"), 4)
 	tileset_1.tileset_image:setFilter("nearest", "nearest")
 	tileset_1:Load()
-	
-	-- load collision
-	map_1_collision = tileset_1:LoadCollision(maps.map_1_layer_1, maps.map_width, maps.map_height)
-	
+		
 	-- create a messagebox object
-	messagebox_1 = messagebox:Create()
 	messagebox_1:Load()
 	
 	-- load intro text
@@ -67,28 +67,11 @@ function love.draw()
 	-- draw the player
 	player_1:Draw()
 	
+	-- draw debug
+--	DrawDebug()
+	
 	-- draw messagebox box
 	messagebox_1:DrawBox()
-	
-	--------------------------------------------------------------------------------------------------------------------------------
-	--[[DEBUG---------------------------------------------------------------------------------------------------------------------]]
-	--------------------------------------------------------------------------------------------------------------------------------
-	-- draw player collision box
---	love.graphics.setColor(255, 0, 0, 255)
---	love.graphics.rectangle("line", player_1.collider.x, player_1.collider.y, player_1.collider.width, player_1.collider.height)
-	
-	
---	-- draw map collision boxes
---	for y = 1, map_height do
---		for x = 1, map_width do
---			-- if there is a collision box draw it
---			if map_1_collision[y][x] ~= nil then
---				love.graphics.rectangle("line", map_1_collision[y][x].x, map_1_collision[y][x].y, map_1_collision[y][x].width, map_1_collision[y][x].height)
---			end
---		end
---	end
---	love.graphics.setColor(255, 255, 255, 255)
-	--------------------------------------------------------------------------------------------------------------------------------
 	
 	-- unscaled graphics after the pop
 	love.graphics.pop()
@@ -96,4 +79,30 @@ function love.draw()
 	-- draw messagebox text
 	messagebox_1:DrawText(intro_message, SCALER)
 
+end
+
+-- Draw extra debug information to screen
+function DrawDebug()
+	-- draw player collision box
+	love.graphics.setColor(255, 0, 0, 255)
+	love.graphics.setLineWidth(0.5) -- easier to see lines with small boxes
+	love.graphics.rectangle("line", player_1.collider.x, player_1.collider.y, player_1.collider.width, player_1.collider.height)
+	
+	-- draw left, right, up, and down colliders (which are based off of the player collider box)
+	love.graphics.rectangle("line", player_1.collider.x, (player_1.collider.y + 1), 1, (player_1.collider.height - 2))         							 -- left
+    love.graphics.rectangle("line", (player_1.collider.x + (player_1.collider.width - 1)), (player_1.collider.y + 1), 1, (player_1.collider.height - 2)) -- right
+	love.graphics.rectangle("line", (player_1.collider.x + 1), player_1.collider.y, (player_1.collider.width - 2), 1) 									 -- top
+	love.graphics.rectangle("line", (player_1.collider.x + 1), (player_1.collider.y + (player_1.collider.height - 1)), (player_1.collider.width - 2), 1) -- bottom
+	
+	-- draw map collision boxes
+	for y = 1, maps.map_height do
+		for x = 1, maps.map_width do
+			-- if there is a collision box draw it
+			if map_1_collision[y][x] ~= nil then
+				love.graphics.rectangle("line", map_1_collision[y][x].x, map_1_collision[y][x].y, map_1_collision[y][x].width, map_1_collision[y][x].height)
+			end
+		end
+	end
+	love.graphics.setColor(255, 255, 255, 255)
+	
 end
