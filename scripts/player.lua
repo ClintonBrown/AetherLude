@@ -20,12 +20,14 @@ function Player:Create(img, nm)
 	return this	
 end
 
-function Player:LoadCollider()
+function Player:LoadCollider()	
 	-- set up player collider
 	self.collider.x = self.xpos
 	self.collider.y = self.ypos
-	self.collider.width  = self.sprite:getWidth()
-	self.collider.height = self.sprite:getHeight()
+	
+	-- collider is slightly widened to allow for pixel perfect collisions
+	self.collider.width  = self.sprite:getWidth() + 1
+	self.collider.height = self.sprite:getHeight() + 1
 end
 
 -- draws player in center of screen
@@ -58,8 +60,8 @@ function Player:Movement(dt, map_w, map_h, m1c)
 		end
 		
 		-- move collider to new player location
-		self.collider.y = self.ypos
-		self.collider.x = self.xpos
+		self.collider.y = self.ypos - 0.5
+		self.collider.x = self.xpos - 0.5
 	end
 end
 

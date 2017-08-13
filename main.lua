@@ -54,6 +54,8 @@ function love.update(dt)
 end
 
 function love.draw()
+	love.graphics.clear()
+	
 	-- store the current state
 	love.graphics.push()
 	
