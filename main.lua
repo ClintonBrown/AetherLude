@@ -15,12 +15,9 @@ local SCALER = 4
 local player_1 = player:Create(love.graphics.newImage("sprites/sprite1.png"), "Aether")
 local tileset_1 = tileset:Create(love.graphics.newImage("tiles/tile1.png"), 4)
 local messagebox_1 = messagebox:Create()
-
--- initialize map table and load first map
 local collision_map = tileset_1:LoadCollision(maps.maps_table[2][1], maps.map_width, maps.map_height)
 
-
---[[Tracks which map the player is currently on, Not all numbers are used.
+--[[Tracks which map the player is currently on using map table, not all numbers are used.
 	Where 2 is the starting map:
 	9, 10, 11, 12
 	5,  6,  7, 8
