@@ -14,11 +14,13 @@ local SCALER = 4
 -- object initialization
 local player_1 = player:Create(love.graphics.newImage("sprites/sprite1.png"), "Aether")
 local tileset_1 = tileset:Create(love.graphics.newImage("tiles/tile1.png"), 4)
-local collision_map = tileset_1:LoadCollision(maps.map_1_layer_1, maps.map_width, maps.map_height)
 local messagebox_1 = messagebox:Create()
 
---[[Tracks which map the player is currently on, isn't actually a 
-	table but works like one mathematically. Not all numbers are used.
+-- initialize map table and load first map
+local collision_map = tileset_1:LoadCollision(maps.maps_table[2][1], maps.map_width, maps.map_height)
+
+
+--[[Tracks which map the player is currently on, Not all numbers are used.
 	Where 2 is the starting map:
 	9, 10, 11, 12
 	5,  6,  7, 8
@@ -64,7 +66,7 @@ function love.update(dt)
 	
 	-- check player location for teleports and update the map accordingly
 	current_map   = mteleport.CheckTeleports(player_1, tileset_1, current_map)
-	collision_map = mteleport.UpdateCollision(collision_map, tileset_1, current_map)
+	collision_map = mteleport.UpdateCollision(maps.maps_table, tileset_1, current_map)
 	
 end
 
@@ -79,7 +81,7 @@ function love.draw()
 	love.graphics.scale(SCALER, SCALER)
 	
 	-- draw current tilemaps
-	mteleport.DrawMap(tileset_1, current_map)
+	mteleport.DrawMap(tileset_1, maps.maps_table, current_map)
 	
 	-- draw the player
 	player_1:Draw()
