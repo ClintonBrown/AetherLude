@@ -14,7 +14,7 @@ local SCALER = 4
 -- object initialization
 local player_1 = player:Create(love.graphics.newImage("sprites/sprite1.png"), "Aether")
 local tileset_1 = tileset:Create(love.graphics.newImage("tiles/tile1.png"), 4)
-local messagebox_1 = messagebox:Create()
+local messagebox_1 = messagebox:Create("[-INTERCOM-]\nAttention engineers. The Aethercore reactor has reached critical instability. Evacuate immediately!")
 local collision_map = tileset_1:LoadCollision(maps.maps_table[2][1], maps.map_width, maps.map_height)
 
 --[[Tracks which map the player is currently on using map table, not all numbers are used.
@@ -43,13 +43,12 @@ function love.load()
 	-- load tileset object
 	tileset_1.tileset_image:setFilter("nearest", "nearest")
 	tileset_1:Load()
-		
+
 	-- create a messagebox object
 	messagebox_1:Load()
 	
-	-- load intro text
-	intro_message = "[-INTERCOM-]\nAttention engineers. The Aethercore reactor has reached critical instability. Evacuate immediately!"
-	messagebox_1.enabled = true
+	-- enable messagebox for intro message
+	messagebox_1.enabled  = true
 	
 end
 
@@ -93,7 +92,7 @@ function love.draw()
 	love.graphics.pop()
 	
 	-- draw messagebox text
-	messagebox_1:DrawText(intro_message, SCALER)
+	messagebox_1:DrawText(SCALER)
 
 end
 

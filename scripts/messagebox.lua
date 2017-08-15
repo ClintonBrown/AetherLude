@@ -3,13 +3,14 @@
 local MessageBox = {}
 MessageBox.__index = MessageBox
 
-function MessageBox:Create()
+function MessageBox:Create(msg)
 	local this = {
 		MB_GAP    = 2,
 		MB_WIDTH  = 0,
 		MB_HEIGHT = 0,
 		mb_xpos   = 0,
 		mb_ypos   = 0,
+		message   = msg,
 		enabled   = false }
 	
 	setmetatable(this, self)
@@ -45,13 +46,13 @@ function MessageBox:DrawBox()
 	end
 end
 
-function MessageBox:DrawText(message, gfx_scaler)
+function MessageBox:DrawText(gfx_scaler)
 	if self.enabled then
 		local font = love.graphics.newFont("alphbeta.ttf", 14)
 		
 		-- draw text in message box
 		love.graphics.setFont(font)
-		love.graphics.printf(message, (self.mb_xpos + self.MB_GAP) * gfx_scaler, (self.mb_ypos + self.MB_GAP) * gfx_scaler, self.MB_WIDTH * gfx_scaler)
+		love.graphics.printf(self.message, (self.mb_xpos + self.MB_GAP) * gfx_scaler, (self.mb_ypos + self.MB_GAP) * gfx_scaler, self.MB_WIDTH * gfx_scaler)
 	end
 end
 
