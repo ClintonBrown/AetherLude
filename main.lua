@@ -4,6 +4,9 @@ local player     = require("scripts.player")
 local tileset    = require("scripts.tileset")
 local messagebox = require("scripts.messagebox")
 local maps       = require("scripts.tilemaps")
+local mteleport  = require("scripts.mapteleport")
+
+if arg[#arg] == "-debug" then require ("mobdebug").start() end
 
 -- window variables
 local SCALER = 4
@@ -11,11 +14,16 @@ local SCALER = 4
 -- object initialization
 local player_1 = player:Create(love.graphics.newImage("sprites/sprite1.png"), "Aether")
 local tileset_1 = tileset:Create(love.graphics.newImage("tiles/tile1.png"), 4)
-local map_1_collision = tileset_1:LoadCollision(maps.map_1_layer_1, maps.map_width, maps.map_height)
+local collision_map = tileset_1:LoadCollision(maps.map_1_layer_1, maps.map_width, maps.map_height)
 local messagebox_1 = messagebox:Create()
 
--- tracks which map the player is currently on
-local current_map = 1
+--[[Tracks which map the player is currently on, isn't actually a 
+	table but works like one mathematically. Not all numbers are used.
+	Where 2 is the starting map:
+	9, 10, 11, 12
+	5,  6,  7, 8
+	1,  2,  3, 4   ]]
+local current_map = 2
 
 function love.load()
 	-- set up debugging
@@ -41,7 +49,7 @@ function love.load()
 	messagebox_1:Load()
 	
 	-- load intro text
-	intro_message = "[-INTERCOM-]\nAethercore engineer 5515 please report to the North Command Room immediately."
+	intro_message = "[-INTERCOM-]\nAttention engineers. The Aethercore reactor has reached critical instability. Evacuate immediately!"
 	messagebox_1.enabled = true
 	
 end
@@ -52,18 +60,11 @@ function love.update(dt)
 	messagebox_1:Continue()
 	
 	-- allow player movement
-	player_1:Movement(dt, maps.map_height, maps.map_width, map_1_collision)
+	player_1:Movement(dt, maps.map_height, maps.map_width, collision_map)
 	
-	-- check for map teleports
-	if current_map == 1 and player_1.ypos < tileset_1.tile_size / 2 then
-		current_map = 2
-		map_1_collision = tileset_1:LoadCollision(maps.map_2_layer_1, maps.map_width, maps.map_height)
-		player_1.ypos = WINDOW_HEIGHT - tileset_1.tile_size * 1.5
-	elseif current_map == 2 and player_1.ypos > WINDOW_HEIGHT - (tileset_1.tile_size) then
-		current_map = 1
-		map_1_collision = tileset_1:LoadCollision(maps.map_1_layer_1, maps.map_width, maps.map_height)
-		player_1.ypos = tileset_1.tile_size / 2
-	end
+	-- check player location for teleports and update the map accordingly
+	current_map   = mteleport.CheckTeleports(player_1, tileset_1, current_map)
+	collision_map = mteleport.UpdateCollision(collision_map, tileset_1, current_map)
 	
 end
 
@@ -77,14 +78,8 @@ function love.draw()
 	-- scale the graphics
 	love.graphics.scale(SCALER, SCALER)
 	
-	-- draw tilemaps
-	if current_map == 1 then
-		tileset_1:Draw(maps.map_1_layer_1, maps.map_width, maps.map_height)
-		tileset_1:Draw(maps.map_1_layer_2, maps.map_width, maps.map_height)
-	elseif current_map == 2 then
-		tileset_1:Draw(maps.map_2_layer_1, maps.map_width, maps.map_height)
-		tileset_1:Draw(maps.map_2_layer_2, maps.map_width, maps.map_height)
-	end
+	-- draw current tilemaps
+	mteleport.DrawMap(tileset_1, current_map)
 	
 	-- draw the player
 	player_1:Draw()
@@ -120,8 +115,8 @@ function DrawDebug()
 	for y = 1, maps.map_height do
 		for x = 1, maps.map_width do
 			-- if there is a collision box draw it
-			if map_1_collision[y][x] ~= nil then
-				love.graphics.rectangle("line", map_1_collision[y][x].x, map_1_collision[y][x].y, map_1_collision[y][x].width, map_1_collision[y][x].height)
+			if collision_map[y][x] ~= nil then
+				love.graphics.rectangle("line", collision_map[y][x].x, collision_map[y][x].y, collision_map[y][x].width, collision_map[y][x].height)
 			end
 		end
 	end

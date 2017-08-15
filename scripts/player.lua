@@ -36,14 +36,14 @@ function Player:Draw()
 end
 
 -- takes keyboard input for player movement
-function Player:Movement(dt, map_w, map_h, m1c)
+function Player:Movement(dt, map_w, map_h, c_map)
 	if self.can_act then
 		-- shorthand command
 		local key = love.keyboard
 		
 		-- check collisions for player
 		local collision  = require("scripts.collision")
-		local is_collision = collision.UpdateCollision(self, map_w, map_h, m1c)
+		local is_collision = collision.UpdateCollision(self, map_w, map_h, c_map)
 		
 		-- move if wsad or arrow keys are pressed but do not leave screen
 		if (key.isDown("w") or key.isDown("up")) and self.ypos > 0 and not is_collision.up then

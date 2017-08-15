@@ -4,7 +4,7 @@ local Collision = {}
 
 -- perform collision checks for an object with 4-direction movement
 -- object must have xpos, ypos, and sprite
-function Collision.UpdateCollision(object, map_w, map_h, m1c)
+function Collision.UpdateCollision(object, map_w, map_h, c_map)
 	-- reset collision check
 	local is_collision = { left = false, right = false, up = false, down = false }
 	
@@ -17,29 +17,29 @@ function Collision.UpdateCollision(object, map_w, map_h, m1c)
 	for y = 1, map_w do
 		for x = 1, map_h do
 			-- if there is a collision report it
-			if m1c[y][x] ~= nil then
+			if c_map[y][x] ~= nil then
 				
 				-- Check for collisions on left, right, top, and bottom of player collision box
 				if Collision.CheckCollision(object.collider.x, (object.collider.y + C_THICK), C_THICK, (object.collider.height - C_GAPY),
-										    (m1c[y][x].x + C_GAPX), m1c[y][x].y, (m1c[y][x].width - C_GAPX), m1c[y][x].height) then
+										    (c_map[y][x].x + C_GAPX), c_map[y][x].y, (c_map[y][x].width - C_GAPX), c_map[y][x].height) then
 				-- there was a collision between LEFT of player and RIGHT of collidable tile
 				is_collision.left = true
 				end
 				
 				if Collision.CheckCollision((object.collider.x + (object.collider.width - C_THICK)), (object.collider.y + C_THICK), C_THICK, (object.collider.height - C_GAPY),
-											 m1c[y][x].x, m1c[y][x].y, (m1c[y][x].width - C_GAPX), m1c[y][x].height) then
+											 c_map[y][x].x, c_map[y][x].y, (c_map[y][x].width - C_GAPX), c_map[y][x].height) then
 				-- there was a collision between RIGHT of player and LEFT of collidable tile
 				is_collision.right = true
 				end
 				
 				if Collision.CheckCollision((object.collider.x + C_THICK), object.collider.y, (object.collider.width - C_GAPX), C_THICK,
-										     m1c[y][x].x, (m1c[y][x].y + C_GAPY), m1c[y][x].width, (m1c[y][x].height - C_GAPY)) then
+										     c_map[y][x].x, (c_map[y][x].y + C_GAPY), c_map[y][x].width, (c_map[y][x].height - C_GAPY)) then
 				-- there was a collision between TOP of player and BOTTOM of collidable tile
 				is_collision.up = true
 				end
 				
 				if Collision.CheckCollision((object.collider.x + C_THICK), (object.collider.y + (object.collider.height - C_THICK)), (object.collider.width - C_GAPX), C_THICK,
-										     m1c[y][x].x, m1c[y][x].y, m1c[y][x].width, (m1c[y][x].height - C_GAPY)) then
+										     c_map[y][x].x, c_map[y][x].y, c_map[y][x].width, (c_map[y][x].height - C_GAPY)) then
 				-- there was a collision between BOTTOM of player and TOP of collidable tile
 				is_collision.down = true
 				end
