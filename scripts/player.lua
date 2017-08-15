@@ -46,16 +46,16 @@ function Player:Movement(dt, map_w, map_h, c_map)
 		local is_collision = collision.UpdateCollision(self, map_w, map_h, c_map)
 		
 		-- move if wsad or arrow keys are pressed but do not leave screen
-		if (key.isDown("w") or key.isDown("up")) and self.ypos > 0 and not is_collision.up then
+		if (key.isDown("w") or key.isDown("up")) and not is_collision.up then
 			self.ypos = math.floor(self.ypos) - (self.speed * dt)
 			
-		elseif (key.isDown("s") or key.isDown("down"))  and self.ypos < WINDOW_HEIGHT - self.sprite:getHeight() and not is_collision.down then
+		elseif (key.isDown("s") or key.isDown("down")) and not is_collision.down then
 			self.ypos = math.ceil(self.ypos) + (self.speed * dt)
 			
-		elseif (key.isDown("a") or key.isDown("left")) and self.xpos > 0 and not is_collision.left then
+		elseif (key.isDown("a") or key.isDown("left")) and not is_collision.left then
 			self.xpos = math.floor(self.xpos) - (self.speed * dt)
 			
-		elseif (key.isDown("d") or key.isDown("right")) and self.xpos < WINDOW_WIDTH - self.sprite:getWidth() and not is_collision.right then
+		elseif (key.isDown("d") or key.isDown("right")) and not is_collision.right then
 			self.xpos = math.ceil(self.xpos) + (self.speed * dt)
 		end
 		

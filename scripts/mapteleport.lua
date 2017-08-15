@@ -13,24 +13,23 @@ local maps = require("scripts.tilemaps")
 -- Returns: integer value of the new current map
 function MapTeleport.CheckTeleports(pl_obj, tset, this_map)
 	local half_tile     = tset.tile_size / 2
-	local add_half_tile = tset.tile_size * 1.5
 	
 	--check for map teleports
-	if pl_obj.ypos < half_tile then
+	if pl_obj.ypos < -half_tile then
 		this_map = this_map + 4
-		pl_obj.ypos = WINDOW_HEIGHT - add_half_tile
+		pl_obj.ypos = WINDOW_HEIGHT - half_tile
 		
-	elseif pl_obj.ypos > WINDOW_HEIGHT - add_half_tile then
+	elseif pl_obj.ypos > WINDOW_HEIGHT - half_tile then
 		this_map = this_map - 4
-		pl_obj.ypos = half_tile
+		pl_obj.ypos = -half_tile
 		
-	elseif pl_obj.xpos < half_tile then
+	elseif pl_obj.xpos < -half_tile then
 		this_map = this_map - 1
-		pl_obj.xpos = WINDOW_WIDTH - add_half_tile
+		pl_obj.xpos = WINDOW_WIDTH - half_tile
 		
-	elseif pl_obj.xpos > WINDOW_WIDTH - add_half_tile then
+	elseif pl_obj.xpos > WINDOW_WIDTH - half_tile then
 		this_map = this_map + 1
-		pl_obj.xpos = half_tile
+		pl_obj.xpos = -half_tile
 		
 	end
 	
