@@ -1,4 +1,5 @@
 -- Tilemaps for areas
+
 --[[map table, 2 is start map:
 	9, 10, 11, 12
 	5,  6,  7,  8
@@ -256,9 +257,5 @@ Tilemaps.maps_table = {
 	},
 
 }
-
---function Tilemaps.GetMapTable()
---	return Tilemaps.maps_table
---end
 
 return Tilemaps
