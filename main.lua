@@ -5,6 +5,7 @@ local tileset    = require("scripts.tileset")
 local messagebox = require("scripts.messagebox")
 local maps       = require("scripts.tilemaps")
 local mteleport  = require("scripts.mapteleport")
+local battle     = require("scripts.battle")
 
 if arg[#arg] == "-debug" then require ("mobdebug").start() end
 
@@ -16,6 +17,7 @@ local player_1 = player:Create(love.graphics.newImage("sprites/sprite1.png"), "A
 local tileset_1 = tileset:Create(love.graphics.newImage("tiles/tile1.png"), 4)
 local messagebox_1 = messagebox:Create("[-INTERCOM-]\nAttention engineers. The Aethercore reactor has reached critical instability. Evacuate immediately!")
 local collision_map = tileset_1:LoadCollision(maps.maps_table[2][1], maps.map_width, maps.map_height)
+local battler = battle:Create()
 
 --[[Tracks which map the player is currently on using map table, not all numbers are used.
 	Where 2 is the starting map:
@@ -44,11 +46,14 @@ function love.load()
 	tileset_1.tileset_image:setFilter("nearest", "nearest")
 	tileset_1:Load()
 
-	-- create a messagebox object
+	-- load messagebox variables
 	messagebox_1:Load()
 	
 	-- enable messagebox for intro message
 	messagebox_1.enabled  = true
+	
+	-- load battler variables
+	battler:Load(tileset_1, messagebox_1)
 	
 end
 
@@ -63,6 +68,10 @@ function love.update(dt)
 	-- check player location for teleports and update the map accordingly
 	current_map   = mteleport.CheckTeleports(player_1, tileset_1, current_map)
 	collision_map = mteleport.UpdateCollision(maps.maps_table, tileset_1, current_map)
+	
+	-- battle event handling
+	battler:Start(messagebox_1, player_1)
+	battler:Continue(messagebox_1)
 	
 end
 
@@ -85,14 +94,16 @@ function love.draw()
 	-- draw debug
 --	DrawDebug()
 	
-	-- draw messagebox box
+	-- draw boxes
 	messagebox_1:DrawBox()
+	battler:DrawChoiceBoxes()
 	
 	-- unscaled graphics after the pop
 	love.graphics.pop()
 	
 	-- draw messagebox text
 	messagebox_1:DrawText(SCALER)
+	battler:DrawChoiceText(SCALER)
 
 end
 
