@@ -7,8 +7,6 @@ local maps       = require("scripts.tilemaps")
 local mteleport  = require("scripts.mapteleport")
 local battle     = require("scripts.battle")
 
-if arg[#arg] == "-debug" then require ("mobdebug").start() end
-
 -- window variables
 local SCALER = 4
 
@@ -17,7 +15,7 @@ local player_1 = player:Create(love.graphics.newImage("sprites/sprite1.png"), "A
 local tileset_1 = tileset:Create(love.graphics.newImage("tiles/tile1.png"), 4)
 local messagebox_1 = messagebox:Create("[-INTERCOM-]\nAttention engineers. The Aethercore reactor has reached critical instability. Evacuate immediately!")
 local collision_map = tileset_1:LoadCollision(maps.maps_table[2][1], maps.map_width, maps.map_height)
-local battler = battle:Create()
+local battler = battle:Create(love.graphics.newImage("sprites/anomaly.png"))
 
 --[[Tracks which map the player is currently on using map table, not all numbers are used.
 	Where 2 is the starting map:
@@ -38,6 +36,7 @@ function love.load()
 	
 	-- load player object, sprite filtering, and initial location
 	player_1.sprite:setFilter("nearest", "nearest")
+	battler.enemy_sprite:setFilter("nearest", "nearest")
 	player_1.xpos = math.floor((WINDOW_WIDTH / 2) - player_1.sprite:getWidth()/2)
 	player_1.ypos = math.floor((WINDOW_HEIGHT / 2) - player_1.sprite:getHeight()*2)
 	player_1:LoadCollider()
@@ -58,10 +57,6 @@ function love.load()
 end
 
 function love.update(dt)
-	-- messagebox event handling
-	if messagebox_1.enabled then player_1.can_act = false else player_1.can_act = true end
-	messagebox_1:Continue()
-	
 	-- allow player movement
 	player_1:Movement(dt, maps.map_height, maps.map_width, collision_map)
 	
@@ -71,7 +66,14 @@ function love.update(dt)
 	
 	-- battle event handling
 	battler:Start(messagebox_1, player_1)
-	battler:Continue(messagebox_1)
+	battler:Continue(messagebox_1, player_1, SCALER)
+	
+	-- messagebox event handling
+	if messagebox_1.enabled then player_1.can_act = false else player_1.can_act = true end
+	messagebox_1:Continue(player_1)
+	
+	-- check if player is dead
+	player_1:IsDead(messagebox_1)
 	
 end
 
@@ -91,19 +93,24 @@ function love.draw()
 	-- draw the player
 	player_1:Draw()
 	
+	-- draw enemy during battle
+	battler:DrawEnemy()
+	
 	-- draw debug
 --	DrawDebug()
 	
 	-- draw boxes
 	messagebox_1:DrawBox()
 	battler:DrawChoiceBoxes()
-	
+	battler:DrawPlayerHealthBox()
+
 	-- unscaled graphics after the pop
 	love.graphics.pop()
 	
 	-- draw messagebox text
 	messagebox_1:DrawText(SCALER)
 	battler:DrawChoiceText(SCALER)
+	battler:DrawPlayerHealthText(player_1, SCALER)
 
 end
 
