@@ -26,7 +26,7 @@ function MessageBox:Load()
 end
 
 -- get input from user to continue past this messagebox
-function MessageBox:Continue(pl_obj)
+function MessageBox:Continue(pl_obj, this_map)
 	if (pl_obj.is_dead and self.enabled) then
 		-- if player's health is 0 and key is pressed exit game
 		function love.keypressed(key)

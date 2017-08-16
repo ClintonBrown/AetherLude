@@ -8,7 +8,7 @@ function Player:Create(img, nm)
 	local this = {	sprite   = img,
 					speed    = 1,
 					xpos     = 0,
-					ypos	    = 0,
+					ypos	 = 0,
 					collider = { x, y, width, height },
 					name     = nm,
 					health   = 20,

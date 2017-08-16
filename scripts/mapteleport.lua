@@ -12,22 +12,32 @@ local maps = require("scripts.tilemaps")
 -- Teleport player to new map based on their location on the current map
 -- Returns: integer value of the new current map
 function MapTeleport.CheckTeleports(pl_obj, tset, this_map)
-	local half_tile     = tset.tile_size / 2
+	local half_tile = tset.tile_size / 2
 	
-	--check for map teleports
-	if pl_obj.ypos < -half_tile then
+	-- check for map teleports
+	-- map 1 is the last map before the end
+	-- map 4 is the blank map for end of game
+	if this_map ~= 4 and pl_obj.ypos < -half_tile then
 		this_map = this_map + 4
 		pl_obj.ypos = WINDOW_HEIGHT - half_tile
 		
-	elseif pl_obj.ypos > WINDOW_HEIGHT - half_tile then
+	elseif this_map ~= 4 and this_map ~= 1 and pl_obj.ypos > WINDOW_HEIGHT - half_tile then
 		this_map = this_map - 4
 		pl_obj.ypos = -half_tile
 		
-	elseif pl_obj.xpos < -half_tile then
+	elseif this_map == 1 and pl_obj.ypos > WINDOW_HEIGHT - half_tile then
+		-- load blank map
+		this_map = 4
+		
+		-- center player
+		pl_obj.xpos = math.floor((WINDOW_WIDTH / 2) - (pl_obj.sprite:getWidth() / 2))
+		pl_obj.ypos = math.floor((WINDOW_HEIGHT / 2) - pl_obj.sprite:getHeight())
+		
+	elseif this_map ~= 4 and pl_obj.xpos < -half_tile then
 		this_map = this_map - 1
 		pl_obj.xpos = WINDOW_WIDTH - half_tile
 		
-	elseif pl_obj.xpos > WINDOW_WIDTH - half_tile then
+	elseif this_map ~= 4 and pl_obj.xpos > WINDOW_WIDTH - half_tile then
 		this_map = this_map + 1
 		pl_obj.xpos = -half_tile
 		

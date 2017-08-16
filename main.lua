@@ -24,6 +24,8 @@ local battler = battle:Create(love.graphics.newImage("sprites/anomaly.png"))
 	1,  2,  3, 4   ]]
 local current_map = 2
 
+local game_end = false
+
 function love.load()
 	-- set up debugging
 	if arg[#arg] == "-debug" then require ("mobdebug").start() end
@@ -70,10 +72,19 @@ function love.update(dt)
 	
 	-- messagebox event handling
 	if messagebox_1.enabled then player_1.can_act = false else player_1.can_act = true end
-	messagebox_1:Continue(player_1)
+	messagebox_1:Continue(player_1, current_map)
 	
 	-- check if player is dead
 	player_1:IsDead(messagebox_1)
+	
+	-- check if at end of game
+	if current_map == 4 then
+		player_1.can_act = false
+		messagebox_1.enabled   = true
+		player_1.is_dead = true
+		messagebox_1.message   = "Congratulations! You made it out!"
+		
+	end
 	
 end
 
