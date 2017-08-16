@@ -26,8 +26,15 @@ function MessageBox:Load()
 end
 
 -- get input from user to continue past this messagebox
-function MessageBox:Continue()
-	if self.enabled then
+function MessageBox:Continue(pl_obj)
+	if (pl_obj.is_dead and self.enabled) then
+		-- if player's health is 0 and key is pressed exit game
+		function love.keypressed(key)
+			if key == "space" or key == "return" then
+				love.event.quit()
+			end
+		end
+	elseif self.enabled then
 		-- if key is pressed close messagebox
 		if love.keyboard.isDown("space") or love.keyboard.isDown("return") then
 			self.enabled = false
@@ -37,7 +44,7 @@ end
 
 function MessageBox:DrawBox()
 	if self.enabled then
-	-- draw message box background
+		-- draw message box background
 		love.graphics.setColor(0, 0, 40, 230)
 		love.graphics.rectangle("fill", self.mb_xpos, self.mb_ypos, self.MB_WIDTH, self.MB_HEIGHT)
 		-- draw message box border
