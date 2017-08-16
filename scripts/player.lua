@@ -5,18 +5,19 @@ Player.__index = Player
 
 -- create the player
 function Player:Create(img, nm)
-	local this = { sprite   = img,
-				   speed    = 1,
-				   xpos     = 0,
-				   ypos	    = 0,
-				   collider = { x, y, width, height },
-				   name     = nm,
-				   health   = 20,
-				   attack   = 5,
-				   defense  = 5,
-				   moved    = 0,
-				   battle_chance = love.math.random(16 ,80),
-				   can_act = true }
+	local this = {	sprite   = img,
+					speed    = 1,
+					xpos     = 0,
+					ypos	    = 0,
+					collider = { x, y, width, height },
+					name     = nm,
+					health   = 20,
+					max_hp   = 20,
+					attack   = 5,
+					magic    = 3,
+					moved    = 0,
+					is_dead  = false,
+					can_act  = true }
 
 	setmetatable(this, self)
 	return this	
@@ -68,6 +69,13 @@ function Player:Movement(dt, map_w, map_h, c_map)
 		-- move collider to new player location
 		self.collider.y = self.ypos - 0.5
 		self.collider.x = self.xpos - 0.5
+	end
+end
+
+function Player:IsDead(msgbox)
+	if self.is_dead == true then
+		msgbox.message   = "You have died."
+		msgbox.enabled   = true
 	end
 end
 
