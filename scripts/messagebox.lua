@@ -38,7 +38,7 @@ end
 function MessageBox:DrawBox()
 	if self.enabled then
 	-- draw message box background
-		love.graphics.setColor(0, 0, 40, 255)
+		love.graphics.setColor(0, 0, 40, 230)
 		love.graphics.rectangle("fill", self.mb_xpos, self.mb_ypos, self.MB_WIDTH, self.MB_HEIGHT)
 		-- draw message box border
 		love.graphics.setColor(255, 255, 255, 255)
@@ -52,7 +52,7 @@ function MessageBox:DrawText(gfx_scaler)
 		
 		-- draw text in message box
 		love.graphics.setFont(font)
-		love.graphics.printf(self.message, (self.mb_xpos + self.MB_GAP) * gfx_scaler, (self.mb_ypos + self.MB_GAP) * gfx_scaler, self.MB_WIDTH * gfx_scaler)
+		love.graphics.printf(self.message, (self.mb_xpos + self.MB_GAP) * gfx_scaler, (self.mb_ypos + self.MB_GAP) * gfx_scaler, (self.MB_WIDTH - self.MB_GAP) * gfx_scaler)
 	end
 end
 
