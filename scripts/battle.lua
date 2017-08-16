@@ -170,6 +170,13 @@ function Battle:SelectChoice(msgbox, pl_obj, gfx_scaler)
 				self:ExitBattle()
 			else
 				msgbox.message = "You failed to run!"
+				
+				-- calculate enemy damage and subtract from player's health
+				self.dice = love.math.random(1, 6)
+				local damage = self.enemy_attack * self.dice
+				pl_obj.health = pl_obj.health - damage
+				
+				msgbox.message = msgbox.message .. "\nThe ANOMALY hits you for ".. damage .. " hit points!"
 				self.msg_input = false
 				self.choice_selected = 0
 			end
